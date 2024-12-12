@@ -28,7 +28,7 @@ public class AccountService {
         else return null;
     }
     public Account getAccountByUsername(String username){
-        Optional<Account> accountOptional = accountRepository.findByUsername(username);
+        Optional<Account> accountOptional = accountRepository.findByUserName(username);
         if(accountOptional.isPresent()){
             Account account = accountOptional.get();
             return account;
@@ -69,10 +69,17 @@ public class AccountService {
         }
         return null;
     }
+    public Account updateAccountPassword(Account account){
+        Account returnedaccount=getAccountByUsername(account.getUsername());
+        if(returnedaccount.getPassword()==account.getPassword()){
+            return accountRepository.save(account);
+        }
+        return null;
+    }
     public Account deleteAccount(String username,String password){
         Account returnedaccount=getAccountByUsername(username);
         if(returnedaccount.getPassword()==password){
-            accountRepository.deleteByUsername(username);
+            accountRepository.deleteByUserName(username);
             return returnedaccount;
         }
         return null;
