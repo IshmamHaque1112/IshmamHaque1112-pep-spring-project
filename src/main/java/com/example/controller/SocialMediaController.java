@@ -1,4 +1,9 @@
 package com.example.controller;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import com.example.entity.*;
+import com.example.service.*;
 
 
 /**
@@ -7,6 +12,13 @@ package com.example.controller;
  * where applicable as well as the @ResponseBody and @PathVariable annotations. You should
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
+@RestController
 public class SocialMediaController {
+    @Autowired 
+    private AccountService accountService;
+    @Autowired
+    private MessageService messageService;
+
+    
 
 }
