@@ -56,13 +56,27 @@ public class AccountService {
         return null;
     }
     public Account insertAccount(Account account){
+        if(account.getUsername().length()<4) return null;
+        if(account.getPassword().length()<4) return null;
+        Optional<Account> accountOptional=accountRepository.findByUserName(account.getUsername());
+        if(accountOptional.isPresent()){
+            return null;
+        }
         return accountRepository.save(account);
     }
     public Account insertAccount(String username,String password){
+        if(username.length()<4) return null;
+        if(password.length()<4) return null;
+        Optional<Account> accountOptional=accountRepository.findByUserName(username);
+        if(accountOptional.isPresent()){
+            return null;
+        }
         return accountRepository.save(new Account(username,password));
     }
     public Account updateAccountPassword(String username,String password,String newpassword){
         Account returnedaccount=getAccountByUsername(username);
+        if(returnedaccount==null) return null;
+        if(newpassword.length()<4) return null;
         if(returnedaccount.getPassword()==password){
             returnedaccount.setPassword(newpassword);
             return accountRepository.save(returnedaccount);
@@ -71,6 +85,8 @@ public class AccountService {
     }
     public Account updateAccountPassword(Account account){
         Account returnedaccount=getAccountByUsername(account.getUsername());
+        if(returnedaccount==null) return null;
+        if(account.getPassword().length()<4) return null;
         if(returnedaccount.getPassword()==account.getPassword()){
             return accountRepository.save(account);
         }
@@ -78,6 +94,7 @@ public class AccountService {
     }
     public Account deleteAccount(String username,String password){
         Account returnedaccount=getAccountByUsername(username);
+        if(returnedaccount==null) return null;
         if(returnedaccount.getPassword()==password){
             accountRepository.deleteByUserName(username);
             return returnedaccount;
@@ -85,6 +102,8 @@ public class AccountService {
         return null;
     }
     public Account deleteAccount(Account account){
+        Account returnedaccount=getAccountByUsername(account.getUsername());
+        if(returnedaccount==null) return null;
         if(getAccountById(account.getAccountId())!=null){
         accountRepository.deleteById(account.getAccountId());
         return account;

@@ -32,12 +32,26 @@ public class MessageService {
     }
     
     public Message insertMessage(int authorid,String message_text,Long timepost){
+        if(message_text.length()>255) return null;
+        if(message_text.length()==0) return null;
         return messageRepository.save(new Message(authorid,message_text,timepost));
     }
     public Message insertMessage(Message message){
+        if(message.getMessageText().length()>255) return null;
+        if(message.getMessageText().length()==0) return null;
         return messageRepository.save(message);
     }
     public Message updateMessage(Message message){
+        if(message.getMessageText().length()>255) return null;
+        if(message.getMessageText().length()==0) return null;
+        return messageRepository.save(message);
+    }
+    public Message updateMessage(int messageid,String message_text){
+        if(message_text.length()>255) return null;
+        if(message_text.length()==0) return null;
+        Message message=getMessagebyID(messageid);
+        if(message==null) return null;
+        message.setMessageText(message_text);
         return messageRepository.save(message);
     }
     public Message deleteMessagebyID(int id){
