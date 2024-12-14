@@ -28,7 +28,7 @@ public class AccountService {
         else return null;
     }
     public Account getAccountByUsername(String username){
-        Optional<Account> accountOptional = accountRepository.findByUserName(username);
+        Optional<Account> accountOptional = accountRepository.findByUsername(username);
         if(accountOptional.isPresent()){
             Account account = accountOptional.get();
             return account;
@@ -58,7 +58,7 @@ public class AccountService {
     public Account insertAccount(Account account){
         if(account.getUsername().length()<4) return null;
         if(account.getPassword().length()<4) return null;
-        Optional<Account> accountOptional=accountRepository.findByUserName(account.getUsername());
+        Optional<Account> accountOptional=accountRepository.findByUsername(account.getUsername());
         if(accountOptional.isPresent()){
             return null;
         }
@@ -67,7 +67,7 @@ public class AccountService {
     public Account insertAccount(String username,String password){
         if(username.length()<4) return null;
         if(password.length()<4) return null;
-        Optional<Account> accountOptional=accountRepository.findByUserName(username);
+        Optional<Account> accountOptional=accountRepository.findByUsername(username);
         if(accountOptional.isPresent()){
             return null;
         }
@@ -96,7 +96,7 @@ public class AccountService {
         Account returnedaccount=getAccountByUsername(username);
         if(returnedaccount==null) return null;
         if(returnedaccount.getPassword()==password){
-            accountRepository.deleteByUserName(username);
+            accountRepository.deleteByUsername(username);
             return returnedaccount;
         }
         return null;
