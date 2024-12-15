@@ -30,18 +30,24 @@ public class SocialMediaController {
     //app.post("/register", this::registerAccountHandler);
     //app.patch("/messages/{message_id}", this::updateMessageHandler);
     
-    @GetMapping("/accounts/")
+    @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts(){
-        return ResponseEntity.status(200).body(accountService.getAllAccounts());
+        List<Account> accounts=new ArrayList<Account>();
+        accounts=accountService.getAllAccounts();
+        if(accounts.size()==0) return ResponseEntity.status(200).build(); 
+        else return ResponseEntity.status(200).body(accountService.getAllAccounts());
     }
-    @GetMapping("/messages/")
+    @GetMapping("/messages")
     public ResponseEntity<List<Message>> getAllMessages(){
-        return ResponseEntity.status(200).body(messageService.getAllMessages());
+        List<Message> messages=new ArrayList<Message>();
+        messages=messageService.getAllMessages();
+        if(messages.size()==0) return ResponseEntity.status(200).build(); 
+        else return ResponseEntity.status(200).body(messageService.getAllMessages());
     }
     @GetMapping("/messages/{message_id}")
     public ResponseEntity<Message> getMessagebyID(@PathVariable int message_id){
         if(messageService.getMessagebyID(message_id)==null){
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(200).build();
         }
         else return ResponseEntity.status(200).body(messageService.getMessagebyID(message_id));
     }
@@ -61,8 +67,12 @@ public class SocialMediaController {
         else return ResponseEntity.status(200).body(messageService.insertMessage(message));
     }
     @DeleteMapping("/messages/{message_id}")
-    public ResponseEntity<Message> deleteMessagebyID(@PathVariable int message_id){
-        return ResponseEntity.status(200).body(messageService.deleteMessagebyID(message_id));
+    public ResponseEntity<Integer> deleteMessagebyID(@PathVariable int message_id){
+        if(messageService.getMessagebyID(message_id)!=null){
+          messageService.deleteMessagebyID(message_id);
+          return ResponseEntity.status(200).body(1);
+        }
+        else return ResponseEntity.status(200).build();
     }
     @DeleteMapping("/accounts")
     public ResponseEntity<Account> deleteAccount(@RequestBody Account account){
@@ -90,12 +100,13 @@ public class SocialMediaController {
         return ResponseEntity.status(409).build();
     }
     @PatchMapping("/messages/{message_id}")
-    public ResponseEntity<Message> updateMessage(@PathVariable int message_id,@RequestBody Message message){
+    public ResponseEntity<Integer> updateMessage(@RequestBody Message message,@PathVariable int message_id){
         if(messageService.getMessagebyID(message_id)==null){
            return ResponseEntity.status(400).build();
         }
         else if((message.getMessageText().length()!=0)&&(message.getMessageText().length()<256)){
-            return ResponseEntity.status(200).body(messageService.updateMessage(message_id, message.getMessageText()));
+            messageService.updateMessage(message_id, message.getMessageText());
+            return ResponseEntity.status(200).body(1);
         }
         else return ResponseEntity.status(400).build(); 
     }
