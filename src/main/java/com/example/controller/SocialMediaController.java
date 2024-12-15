@@ -18,18 +18,7 @@ public class SocialMediaController {
     @Autowired 
     private AccountService accountService;
     @Autowired
-    private MessageService messageService;
-    //app.get("/accounts", this::getAllAccountsHandler);
-    //app.get("/messages", this::getAllMessagesHandler);
-    //app.get("/messages/{message_id}", this::getMessagebyIDHandler);
-    //app.get("/accounts/{account_id}/messages", this::getMessagesbyAccountIDHandler);
-    //app.post("/messages", this::postMessageHandler);
-    //app.delete("/messages/{message_id}", this::deleteMessagebyIDHandler);
-    //app.delete("/accounts", this::deleteAccountHandler);
-    //app.post("/login", this::loginAccountHandler);
-    //app.post("/register", this::registerAccountHandler);
-    //app.patch("/messages/{message_id}", this::updateMessageHandler);
-    
+    private MessageService messageService; 
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts(){
         List<Account> accounts=new ArrayList<Account>();
